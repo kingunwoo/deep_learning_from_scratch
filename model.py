@@ -10,9 +10,5 @@ import pickle
 import optimizer 
 import loss_function
 
-def get_data(): 
-    (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=True, one_hot_label=False)
-    return x_test, t_test
-
-def im2col(input_data, filter_h, filter_w, stride = 1, pad = 0):
-    return out_matrix
+class LeNet():
+    
