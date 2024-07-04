@@ -42,5 +42,10 @@ class pooling:
     def __init__(self, pool_h, pool_w,  mode='max', pad = 0, stride = 1):
     
         
-    
-                
+if __name__ == "__main__":
+    import common_functions  # common_functions 모듈 가져오기
+
+    input_data = np.random.randn(1, 1, 28, 28)  # 예시 입력 데이터
+    conv_layer = convolution(filter_n=6, filter_h=5, filter_w=5, pad=2, stride=1, activation='sigmoid')
+    output_data = conv_layer.forward(input_data)
+    print(output_data.shape)
