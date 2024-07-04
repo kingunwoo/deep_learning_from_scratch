@@ -30,8 +30,9 @@ def col2im(cols, input_shape, filter_h, filter_w, stride=1, pad=0):
     out_w = (W_padded - filter_w) // stride + 1
 
     img = np.zeros((N, C, H_padded, W_padded))
-    col_reshaped = cols.reshape(N, out_h, out_w, C, filter_h, filter_w).transpose(0, 3, 4, 5, 1, 2)
+    col_reshaped = cols.reshape(N, out_h,out_w, C, filter_h, out_w).transpose(0, 5,3,4,1,2)
     overlapping_count = np.zeros_like(img)
+    
     for y in range(filter_h):
         y_max = y + stride * out_h
         for x in range(filter_w):

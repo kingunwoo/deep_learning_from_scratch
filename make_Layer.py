@@ -15,13 +15,21 @@ class convolution:
             self.filter = np.random.randn(filter_n, filter_h, filter_w) / np.sqrt(2 / self.filter_n * self.filter_h * self.filter_w)
         
     def forward(self,input_data):
+        N, C, H, W = input_data.shape
+        OH = (H + 2 * self.pad - self.filter_h) // self.stride + 1
+        OW = (W + 2 * self.pad - self.filter_w) // self.stride + 1
+        
         flatten_img = common_functions.im2col(input_data, self.filter_h, self.filter_w, self.stride, self.pad)
+        print(flatten_img.shape)
         flatten_filter = self.filter.reshape(self.filter_n, -1).T
+        print(flatten_filter.shape)
         flatten_conv_img = np.dot(flatten_img, flatten_filter)
-        output_img = common_functions.col2im(flatten_conv_img, input_data.shape, self.filter_h, self.filter_w, self.stride, self.pad)
+        print(flatten_conv_img.shape)
+        output_img = flatten_conv_img.reshape(N,self.filter_n,OH,OW)
         return output_img
         
     def backward(self):
+        
         return 
 
 #lass fc:
@@ -41,11 +49,3 @@ class convolution:
 #lass pooling:
 #   def __init__(self, pool_h, pool_w,  mode='max', pad = 0, stride = 1):
     
-        
-if __name__ == "__main__":
-    import common_functions  # common_functions ��� ��������
-
-    input_data = np.random.randn(1, 1, 28, 28)  # ���� �Է� ������
-    conv_layer = convolution(filter_n=6, filter_h=5, filter_w=5, pad=2, stride=1, activation='sigmoid')
-    output_data = conv_layer.forward(input_data)
-    print(output_data.shape)
