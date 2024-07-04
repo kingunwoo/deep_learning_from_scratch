@@ -1,10 +1,15 @@
 import numpy as np
 
-def sigmoid():
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def softmax(x):
+    sum = np.sum(np.exp(x))
+    return np.exp(x)/sum
+
+def tanh(x):
     return
 
-def tanh():
-    return
+def ReLU(x):
+    return np.maximum(0,x)
 
-def ReLU():
-    return

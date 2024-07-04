@@ -43,7 +43,6 @@ def col2im(cols, input_shape, filter_h, filter_w, stride=1, pad=0):
     
     # dividing overrapping region
     img = img / overlapping_count
-    
     return img
 
 
