@@ -24,8 +24,8 @@ class LeNet_v1:
         #pool2_output(5,5,16)
         
         self.layers_dict['flatten1'] = make_layer.flatten()
-        self.layers_dict['fc1'] = make_layer.fc(node = 120)
+        self.layers_dict['fc1'] = make_layer.fc(output_node = 120)
         self.layers_dict['sigmoid3'] = make_layer.sigmoid()
-        self.layers_dict['fc2'] = make_layer.fc(node = 84)
+        self.layers_dict['fc2'] = make_layer.fc(output_node = 84)
         self.layers_dict['sigmoid4'] = make_layer.sigmoid()
-        self.layers_dict['fc3'] = make_layer.fc(node =10)
+        self.layers_dict['fc3'] = make_layer.fc(output_node =10)
