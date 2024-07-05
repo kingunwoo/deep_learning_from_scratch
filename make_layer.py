@@ -1,5 +1,4 @@
 import numpy as np
-import activation_functions
 import common_functions
 
 class convolution:
@@ -34,7 +33,7 @@ class convolution:
         
         return 
 
-#class fc:
+class fc:
     def __init__(self, output_node, activation = 'sigmoid'): 
         self.output_node = output_node
         self.activation = activation
@@ -62,15 +61,82 @@ class convolution:
         self.dWeight = np.dout(self.input_data.T, dout)
         self.dBias = np.sum(dout, axis = 0)        
         return dx
-#    
-#class pooling:
-#    def __init__(self, pool_h, pool_w,  mode='max', pad = 0, stride = 1):
-#        
-#    def forward():
-#        if(mode == 'max'):
-#        elif(mode == 'average'):
-#    def backward():
-#        if(mode == 'max'):
-#        elif(mode == 'average'):
-#        
     
+class pooling:
+    def __init__(self, pool_h, pool_w,  mode='max', pad = 0, stride = 1):
+        self.pool_h = pool_h
+        self.pool_w = pool_w
+        self.mode = 'max'
+        self.pad = pad
+        self.stride = stride
+        
+        self.dWeight = None
+        self.arg_max = None
+        self.row_avg = None
+        
+    def forward(self,input):
+        N,C,H,W = input.shape
+        OH = ((H-self.pool_h)//self.stride)+1
+        OW = ((W-self.pool_w)//self.stride)+1
+        
+        flatten_img = common_functions.im2col(self.input, self.pool_h, self.pool_w, self.stride, self.pad)
+        flatten_img = flatten_img.reshape(-1, self.pool_h * self.pool_w)
+        
+        if(self.mode == 'max'):
+            out = np.max(flatten_img, axis = 1)
+        elif(self.mode == 'average'):
+            out = np.average(flatten_img, axis = 1)
+            self.row_avg = out.shape[1]
+            
+        out.reshape(N, OH, OW, C).transpose(0, 3, 1, 2)
+        return out
+    
+    def backward(self, dout):
+        
+        if(self.mode == 'max'):
+        elif(self.mode == 'average'):
+            (1 / self.row_avg) * dout
+        
+        return dx
+    
+class sigmoid:
+    def __init__(self):
+        self.out = None
+        
+    def forward(self, x):
+        self.out = 1 / (1 + np.exp(-x))
+        return self.out
+    
+    def backward(self, dout):
+        dx = dout * (1.0 - self.out) * self.out
+        return dx
+    
+#class softmax:
+#    def __init__(self):
+#        self.out = None
+#    
+#    def forward(self, x):
+#        sum = np.sum(np.exp(x))
+#        self.out = np.exp(x)/sum
+#        return self.out
+#    
+#    def backward(self, dout):
+#        dx = dout * 
+#        return dx
+    
+#class tanh:
+#    return
+
+#class ReLU:
+#    return np.maximum(0,x)
+class flatten:
+    def __init__(self):
+        self.original_shape = None
+    
+    def forward(self, input):
+        self.original_shape = input.shape 
+        out = input.reshape(-1,1)
+        return out
+    
+    def backward(self, dout):
+           

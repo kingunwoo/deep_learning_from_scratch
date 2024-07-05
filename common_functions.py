@@ -44,8 +44,7 @@ def col2im(cols, input_shape, filter_h, filter_w, stride=1, pad=0):
     
     # dividing overrapping region
     img = img / overlapping_count
-    return img
-
+    return img    
 
 def get_data(): 
     (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=True, one_hot_label=False)
