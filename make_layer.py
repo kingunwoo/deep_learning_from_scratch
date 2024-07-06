@@ -26,7 +26,7 @@ class convolution:
         flatten_img = common_functions.im2col(input_data, self.filter_h, self.filter_w, self.stride, self.pad)
         
         flatten_filter = self.filter_weight.reshape(self.filter_n, -1).T
-        #¹Ù·Î À§¿¡ flatten_filter¸¦ °è»êÇÏ´Â °úÁ¤ÀÌ Àß¸øµÇ¾ú¾î 
+        #ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½ flatten_filterï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß¸ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ 
         print(flatten_filter.shape)
         print(flatten_img.shape)
         flatten_conv_img = np.dot(flatten_img, flatten_filter) + self.bias
@@ -58,7 +58,7 @@ class fc:
         
     def forward(self, input_data):
         self.input_data = input_data
-        output = np.dot(input_data, self.weight.T) + self.bias
+        output = np.dot(input_data, self.weight) + self.bias
         return output
             
     #def backward(self, dout):
@@ -139,7 +139,7 @@ class flatten:
     
     def forward(self, input):
         self.original_shape = input.shape 
-        out = input.reshape(-1,1)
+        out = input.reshape(1,-1)
         return out
     
     #def backward(self, dout):
