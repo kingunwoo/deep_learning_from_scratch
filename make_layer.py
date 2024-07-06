@@ -26,7 +26,7 @@ class convolution:
         flatten_img = common_functions.im2col(input_data, self.filter_h, self.filter_w, self.stride, self.pad)
         
         flatten_filter = self.filter_weight.reshape(self.filter_n, -1).T
-        #ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½ flatten_filterï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß¸ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ 
+        #ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½ flatten_filterï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿? ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß¸ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ 
         print(flatten_filter.shape)
         print(flatten_img.shape)
         flatten_conv_img = np.dot(flatten_img, flatten_filter) + self.bias
@@ -115,19 +115,18 @@ class sigmoid:
         dx = dout * (1.0 - self.out) * self.out
         return dx
     
-#class softmax:
-#    def __init__(self):
-#        self.out = None
-#    
-#    def forward(self, x):
-#        sum = np.sum(np.exp(x))
-#        self.out = np.exp(x)/sum
-#        return self.out
-#    
-#    def backward(self, dout):
-#        dx = dout * 
-#        return dx
-    
+class softmax:
+    def __init__(self):
+        self.out = None
+
+    def forward(self, x):
+        exp_x = np.exp(x - np.max(x, axis=1, keepdims=True))  # Overflow ¹æÁö
+        self.out = exp_x / np.sum(exp_x, axis=1, keepdims=True)
+        return self.out
+
+    def backward(self, dout):
+        dx = self.out * dout
+        return dx
 #class tanh:
 #    return
 
@@ -139,7 +138,7 @@ class flatten:
     
     def forward(self, input):
         self.original_shape = input.shape 
-        out = input.reshape(1,-1)
+        out = input.reshape(input.shape[0],-1)
         return out
     
     #def backward(self, dout):

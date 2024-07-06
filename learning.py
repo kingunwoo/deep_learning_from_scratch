@@ -1,23 +1,35 @@
+# -*- coding: utf-8 -*-
+
 import numpy as np
 from model import LeNet_v1
 from common_functions import load_mnist
 
-# µ¥ÀÌÅÍ¸¦ ·ÎµåÇÏ´Â ÇÔ¼ö¿¡¼­ flatten=False¸¦ ¸í½ÃÀûÀ¸·Î »ç¿ëÇÏ¿© 4Â÷¿ø µ¥ÀÌÅÍ¸¦ °¡Á®¿È
+def softmax(x):
+    exp_x = np.exp(x - np.max(x, axis=1, keepdims=True))
+    return exp_x / np.sum(exp_x, axis=1, keepdims=True)
+
+# ë°ì´í„°ë¥¼ ë¡œë“œí•˜ëŠ” í•¨ìˆ˜ì—ì„œ flatten=Falseë¥¼ ëª…ì‹œì ìœ¼ë¡œ ì‚¬ìš©í•˜ì—¬ 4ì°¨ì› ë°ì´í„°ë¥¼ ê°€ì ¸ì˜´
 (x_train, t_train), (x_test, t_test) = load_mnist(flatten=False, normalize=True, one_hot_label=False)
 print(x_test.shape)
-# Å×½ºÆ® µ¥ÀÌÅÍ¸¦ Â÷¿ø º¯È¯
-x_test = x_test.reshape(-1, 1, 28, 28)  # x_test¸¦ (N, C, H, W) ÇüÅÂ·Î Á¶Á¤
+# í…ŒìŠ¤íŠ¸ ë°ì´í„°ë¥¼ ì°¨ì› ë³€í™˜
+x_test = x_test.reshape(-1, 1, 28, 28)
 
-# ¸ğµ¨ ÃÊ±âÈ­
-model = LeNet_v1(input=x_test[:10], target=t_test[:10])  # Ã¹ 10°³ÀÇ µ¥ÀÌÅÍ »ç¿ë
+# ëª¨ë¸ ì´ˆê¸°í™”
+model = LeNet_v1(input=x_test[:10], target=t_test[:10])
 
-# ¼øÀüÆÄ ½ÇÇà ¹× °¢ ·¹ÀÌ¾îÀÇ Ãâ·Â È®ÀÎ
+# ìˆœì „íŒŒ ì‹¤í–‰ ë° ê° ë ˆì´ì–´ì˜ ì¶œë ¥ í™•ì¸
 output = x_test[:10]
 for layer_name, layer in model.layers_dict.items():
     output = layer.forward(output)
     print(f"Output of {layer_name}: {output.shape}")
 
-# ¸¶Áö¸· Ãâ·Â °á°ú È®ÀÎ
-print("Final output:", output)
+# ìµœì¢… ì¶œë ¥ ê²°ê³¼ í™•ì¸
+print("Final output before softmax:", output)
 
-#sss
+# softmax ì ìš©
+output_prob = softmax(output)
+print("Final output after softmax:", output_prob)
+
+# ê° ë°ì´í„° í¬ì¸íŠ¸ì— ëŒ€í•œ ì˜ˆì¸¡ í´ë˜ìŠ¤
+predicted_class = np.argmax(output_prob, axis=1)
+print("Predicted class for each sample:", predicted_class)
