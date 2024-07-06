@@ -47,5 +47,5 @@ def col2im(cols, input_shape, filter_h, filter_w, stride=1, pad=0):
     return img    
 
 def get_data(): 
-    (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=True, one_hot_label=False)
+    (x_train, t_train), (x_test, t_test) = load_mnist(flatten=False, normalize=True, one_hot_label=False)
     return x_test, t_test
