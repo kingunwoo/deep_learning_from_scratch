@@ -19,3 +19,5 @@ for layer_name, layer in model.layers_dict.items():
 
 # 마지막 출력 결과 확인
 print("Final output:", output)
+
+#sss
